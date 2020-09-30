@@ -1,18 +1,19 @@
 package com.rcacao.fintechchallenge.view.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rcacao.fintechchallenge.data.model.Contact
 import com.rcacao.fintechchallenge.domain.model.GetContactsResult
-import com.rcacao.fintechchallenge.domain.usecase.GetContactsUseCaseImpl
-import com.rcacao.fintechchallenge.view.uistate.ContactsUiState
+import com.rcacao.fintechchallenge.domain.usecase.GetContactsUseCase
 import com.rcacao.fintechchallenge.view.uistate.Event
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ContactsListViewModel constructor(private val getContactsUseCase: GetContactsUseCaseImpl) :
-    ViewModel() {
+class ContactsListViewModel @ViewModelInject @Inject
+constructor(private val getContactsUseCase: GetContactsUseCase) : ViewModel() {
 
     private val mutableContacts: MutableLiveData<List<Contact>> = MutableLiveData()
     val contacts: LiveData<List<Contact>>
