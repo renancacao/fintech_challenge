@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rcacao.fintechchallenge.data.model.Contacts
+import com.rcacao.fintechchallenge.data.model.Contact
 import com.rcacao.fintechchallenge.domain.model.GetContactsResult
 import com.rcacao.fintechchallenge.domain.usecase.GetContactsUseCaseImpl
 import com.rcacao.fintechchallenge.view.uistate.ContactsUiState
@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 class ContactsListViewModel constructor(private val getContactsUseCase: GetContactsUseCaseImpl) :
     ViewModel() {
 
-    private val mutableContacts: MutableLiveData<List<Contacts>> = MutableLiveData()
-    val contacts: LiveData<List<Contacts>>
+    private val mutableContacts: MutableLiveData<List<Contact>> = MutableLiveData()
+    val contacts: LiveData<List<Contact>>
         get() = mutableContacts
 
     private val mutableUIState: MutableLiveData<ContactsUiState> = MutableLiveData()

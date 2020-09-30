@@ -3,7 +3,7 @@
     <data >
         <variable
             name="contact"
-            type="com.rcacao.fintechchallenge.data.model.Contacts" />
+            type="com.rcacao.fintechchallenge.data.model.Contact" />
     </data>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
