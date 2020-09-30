@@ -5,5 +5,5 @@ import com.rcacao.fintechchallenge.data.model.Contact
 import javax.inject.Inject
 
 class RemoteDataSourceImpl @Inject constructor(private val api: WebService) : RemoteDataSource {
-    override suspend fun getContacts(): List<Contact> = api.contacts().contactsList
+    override suspend fun getContacts(): List<Contact> = api.contacts().list
 }
