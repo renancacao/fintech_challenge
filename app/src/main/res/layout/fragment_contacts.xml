@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data >
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
         <variable
-            name="contact"
-            type="com.rcacao.fintechchallenge.data.model.Contact" />
+            name="viewmodel"
+            type="com.rcacao.fintechchallenge.view.viewmodel.ContactsListViewModel" />
     </data>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.ui.ContactsFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</FrameLayout>
+        android:layout_height="match_parent"
+        tools:context=".view.ui.ContactsFragment">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:contacts="@{viewmodel.contacts}" />
+    </FrameLayout>
 </layout>
