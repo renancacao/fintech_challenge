@@ -11,7 +11,8 @@ import com.rcacao.fintechchallenge.view.uistate.ContactsUiState
 import com.rcacao.fintechchallenge.view.uistate.Event
 import kotlinx.coroutines.launch
 
-class ContactsListViewModel constructor(private val getContactsUseCase: GetContactsUseCaseImpl) : ViewModel() {
+class ContactsListViewModel constructor(private val getContactsUseCase: GetContactsUseCaseImpl) :
+    ViewModel() {
 
     private val mutableContacts: MutableLiveData<List<Contacts>> = MutableLiveData()
     val contacts: LiveData<List<Contacts>>
@@ -24,6 +25,10 @@ class ContactsListViewModel constructor(private val getContactsUseCase: GetConta
     private val mutableErrorEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val errorEvent: LiveData<Event<String>>
         get() = mutableErrorEvent
+
+    init {
+        loadContacts()
+    }
 
     fun loadContacts() {
         mutableUIState.value = ContactsUiState.Loading
