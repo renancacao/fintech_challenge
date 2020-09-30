@@ -12,7 +12,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        tools:background="@android:color/black">
 
         <ImageView
             android:id="@+id/imageUser"
@@ -29,9 +31,10 @@
             android:id="@+id/textUser"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="4dp"
             android:text="@{contact.userName}"
+            android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@{contact.name}"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="@+id/textUser"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textUser"

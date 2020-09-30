@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="image_user_size">50dp</dimen>
+    <dimen name="image_user_size">70dp</dimen>
 </resources>
