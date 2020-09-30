@@ -1,10 +1,11 @@
 package com.rcacao.fintechchallenge.data.repository
 
-import com.rcacao.fintechchallenge.data.datasource.RemoteDataSourceImpl
+import com.rcacao.fintechchallenge.data.datasource.RemoteDataSource
 import com.rcacao.fintechchallenge.data.model.ApiResponse
 import com.rcacao.fintechchallenge.data.model.Contact
+import javax.inject.Inject
 
-class ContactsRepositoryImpl constructor(private val dataSource: RemoteDataSourceImpl) :
+class ContactsRepositoryImpl @Inject constructor(private val dataSource: RemoteDataSource) :
     ContactsRepository {
 
     override suspend fun getContacts(): ApiResponse<List<Contact>> = try {

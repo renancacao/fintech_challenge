@@ -5,8 +5,9 @@ import com.rcacao.fintechchallenge.data.model.Contact
 import com.rcacao.fintechchallenge.data.repository.ContactsRepository
 import com.rcacao.fintechchallenge.domain.model.GetContactsResult
 import com.rcacao.fintechchallenge.utils.Constants
+import javax.inject.Inject
 
-class GetContactsUseCaseImpl constructor(private val repository: ContactsRepository) :
+class GetContactsUseCaseImpl @Inject constructor(private val repository: ContactsRepository) :
     GetContactsUseCase {
 
     override suspend operator fun invoke(): GetContactsResult {
