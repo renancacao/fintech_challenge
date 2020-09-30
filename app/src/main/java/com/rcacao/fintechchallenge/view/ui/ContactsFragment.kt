@@ -34,7 +34,7 @@ class ContactsFragment : Fragment() {
     }
 
     private fun observerErrorEvent() {
-        viewModel.errorEvent.observe(viewLifecycleOwner, Observer { event ->
+        viewModel.error.observe(viewLifecycleOwner, Observer { event ->
             event.getContentIfNotHandled()?.let { showError(it) }
         })
     }
