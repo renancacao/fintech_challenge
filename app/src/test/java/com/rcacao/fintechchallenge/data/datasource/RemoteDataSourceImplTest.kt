@@ -19,7 +19,7 @@ class RemoteDataSourceImplTest {
     fun getContacts_returnContactsList() {
         runBlockingTest {
             whenever(webService.contacts()).thenReturn(contactsList)
-            val dataSource = RemoteDataSourceImpl(webService)
+            val dataSource: RemoteDataSource = RemoteDataSourceImpl(webService)
             assertEquals(contactsList.list, dataSource.getContacts())
         }
     }
