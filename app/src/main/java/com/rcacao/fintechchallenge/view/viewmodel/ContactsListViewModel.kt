@@ -19,9 +19,17 @@ constructor(private val getContactsUseCase: GetContactsUseCase) : ViewModel() {
     val contacts: LiveData<List<Contact>>
         get() = mutableContacts
 
-    private val mutableUIState: MutableLiveData<ContactsUiState> = MutableLiveData()
-    val uiState: LiveData<ContactsUiState>
-        get() = mutableUIState
+    private val mutableProgressVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val progressVisibility: LiveData<Boolean>
+        get() = mutableProgressVisibility
+
+    private val mutableListVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val listVisibility: LiveData<Boolean>
+        get() = mutableListVisibility
+
+    private val mutableButtonVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val buttonVisibility: LiveData<Boolean>
+        get() = mutableButtonVisibility
 
     private val mutableErrorEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val errorEvent: LiveData<Event<String>>
@@ -32,18 +40,35 @@ constructor(private val getContactsUseCase: GetContactsUseCase) : ViewModel() {
     }
 
     fun loadContacts() {
-        mutableUIState.value = ContactsUiState.Loading
+        isLoading()
         viewModelScope.launch {
             when (val result = getContactsUseCase()) {
                 is GetContactsResult.ContactsLoaded -> {
+                    isLoaded()
                     mutableContacts.value = result.contacts
-                    mutableUIState.value = ContactsUiState.Loaded
                 }
                 is GetContactsResult.Error -> {
+                    isError()
                     mutableErrorEvent.value = Event(result.errorMessage)
-                    mutableUIState.value = ContactsUiState.Error
                 }
             }
         }
+    }
+
+    private fun isLoading() {
+        mutableButtonVisibility.value = false
+        mutableProgressVisibility.value = true
+    }
+
+    private fun isLoaded() {
+        mutableButtonVisibility.value = false
+        mutableProgressVisibility.value = false
+        mutableListVisibility.value = true
+    }
+
+    private fun isError() {
+        mutableButtonVisibility.value = true
+        mutableProgressVisibility.value = false
+        mutableListVisibility.value = false
     }
 }

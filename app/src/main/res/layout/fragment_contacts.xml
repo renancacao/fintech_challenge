@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,31 +9,41 @@
             type="com.rcacao.fintechchallenge.view.viewmodel.ContactsListViewModel" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.ui.ContactsFragment">
+        android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            bind:stateVisibility="@{viewmodel.uiState}" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->viewmodel.loadContacts()}"
-            android:padding="4dp"
-            android:text="@string/try_again"
-            bind:stateVisibility="@{viewmodel.uiState}" />
-
-        <androidx.recyclerview.widget.RecyclerView
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:contacts="@{viewmodel.contacts}"
-            bind:stateVisibility="@{viewmodel.uiState}" />
-    </FrameLayout>
+            tools:context=".view.ui.ContactsFragment">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                bind:isVisible="@{viewmodel.progressVisibility}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="@{() -> viewmodel.loadContacts()}"
+                android:padding="4dp"
+                android:text="@string/try_again"
+                bind:isVisible="@{viewmodel.buttonVisibility}" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                bind:contacts="@{viewmodel.contacts}"
+                bind:isVisible="@{viewmodel.listVisibility}" />
+        </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
