@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.rcacao.fintechchallenge.data.model.Contact
 import com.rcacao.fintechchallenge.view.GlideApp
 
@@ -27,7 +28,12 @@ fun setContacts(recyclerView: RecyclerView, contacts: List<Contact>?) {
 
 @BindingAdapter("bind:isVisible")
 fun setVisibility(view: View, isVisible: Boolean) {
-   view.isVisible = isVisible
+    view.isVisible = isVisible
+}
+
+@BindingAdapter("bind:isVisible")
+fun setVisibility(swipe: SwipeRefreshLayout, isVisible: Boolean) {
+    swipe.isRefreshing = isVisible
 }
 
 
