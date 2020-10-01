@@ -6,7 +6,6 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.rcacao.fintechchallenge.data.datasource.RemoteDataSource
 import com.rcacao.fintechchallenge.data.model.ApiResponse
 import com.rcacao.fintechchallenge.data.model.Contact
-import com.rcacao.fintechchallenge.data.model.ContactsList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
