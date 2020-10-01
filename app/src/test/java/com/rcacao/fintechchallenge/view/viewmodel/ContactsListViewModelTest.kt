@@ -26,6 +26,7 @@ class ContactsListViewModelTest {
     private var observerVisibility: Observer<Boolean> = mock()
     private var observerContacts: Observer<List<Contact>> = mock()
     private var observerError: Observer<Event<String>> = mock()
+    private var observerText: Observer<String> = mock()
 
     @Rule
     @JvmField
@@ -50,6 +51,20 @@ class ContactsListViewModelTest {
     }
 
     @Test
+    fun searchContacts_OnSuccess_returnList() {
+        runBlockingTest {
+            val list: List<Contact> = listOf(Contact(), Contact())
+            whenever(searchContactsUseCase.invoke(any(), any())).thenReturn(list)
+
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.searchContacts("teste")
+            viewModel.contacts.observeForever(observerContacts)
+
+            verify(observerContacts).onChanged(list)
+        }
+    }
+
+    @Test
     fun loadContacts_OnError_returnMessage() {
         runBlockingTest {
             whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.Error("error message"))
@@ -58,6 +73,19 @@ class ContactsListViewModelTest {
             viewModel.error.observeForever(observerError)
 
             verify(observerError, times(1)).onChanged(any())
+        }
+    }
+
+    @Test
+    fun searchContacts_returnText() {
+        runBlockingTest {
+            whenever(searchContactsUseCase.invoke(any() ,any())).thenReturn(emptyList())
+
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.searchText.observeForever(observerText)
+            viewModel.searchContacts("teste")
+
+            verify(observerText).onChanged("teste")
         }
     }
 
