@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,13 +10,20 @@
             type="com.rcacao.fintechchallenge.data.model.Contact" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        tools:background="@android:color/black">
+        bind:background="@android:color/black">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_percent=".5"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageUser"
@@ -25,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             bind:imageUrl="@{contact.imageUrl}"
-            tools:src="@mipmap/ic_launcher" />
+            bind:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/textUser"
@@ -33,14 +42,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:text="@{contact.userName}"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageUser"
-            app:layout_constraintTop_toTopOf="@+id/imageUser"
-            tools:text="renan.cacao" />
+            bind:text="renan.cacao" />
 
         <TextView
             android:id="@+id/textName"
@@ -52,8 +62,8 @@
             app:layout_constraintEnd_toEndOf="@+id/textUser"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textUser"
-            app:layout_constraintTop_toBottomOf="@+id/textUser"
-            tools:text="Renan Cação Souza" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            bind:text="Renan Cação Souza" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

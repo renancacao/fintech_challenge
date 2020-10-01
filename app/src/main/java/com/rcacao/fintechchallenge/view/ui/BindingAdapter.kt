@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.rcacao.fintechchallenge.data.model.Contact
 import com.rcacao.fintechchallenge.view.GlideApp
 
@@ -36,4 +37,7 @@ fun setVisibility(swipe: SwipeRefreshLayout, isVisible: Boolean) {
     swipe.isRefreshing = isVisible
 }
 
-
+@BindingAdapter("bind:title")
+fun setVisibility(view: CollapsingToolbarLayout, title: String) {
+    view.title = title
+}

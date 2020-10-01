@@ -52,7 +52,7 @@ class ContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun showError(errorMessage: String) {
-        Snackbar.make(binding.frameLayout, errorMessage, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(binding.coordinatorLayout, errorMessage, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onRefresh() {
