@@ -32,12 +32,12 @@ fun setVisibility(view: View, isVisible: Boolean) {
     view.isVisible = isVisible
 }
 
-@BindingAdapter("bind:isVisible")
-fun setVisibility(swipe: SwipeRefreshLayout, isVisible: Boolean) {
-    swipe.isRefreshing = isVisible
+@BindingAdapter("bind:isLoading")
+fun setLoadingVisibility(swipe: SwipeRefreshLayout, isLoading: Boolean) {
+    swipe.isRefreshing = isLoading
 }
 
 @BindingAdapter("bind:title")
-fun setVisibility(view: CollapsingToolbarLayout, title: String) {
+fun setTitle(view: CollapsingToolbarLayout, title: String) {
     view.title = title
 }

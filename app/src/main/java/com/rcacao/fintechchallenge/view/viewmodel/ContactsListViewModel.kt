@@ -8,32 +8,31 @@ import androidx.lifecycle.viewModelScope
 import com.rcacao.fintechchallenge.data.model.Contact
 import com.rcacao.fintechchallenge.domain.model.GetContactsResult
 import com.rcacao.fintechchallenge.domain.usecase.GetContactsUseCase
+import com.rcacao.fintechchallenge.domain.usecase.SearchContactsUseCase
 import com.rcacao.fintechchallenge.view.uistate.Event
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ContactsListViewModel @ViewModelInject @Inject
-constructor(private val getContactsUseCase: GetContactsUseCase) : ViewModel() {
+constructor(
+    private val getContactsUseCase: GetContactsUseCase,
+    private val searchContactsUseCase: SearchContactsUseCase
+) : ViewModel() {
 
+    private val mutableAllContacts: MutableLiveData<List<Contact>> = MutableLiveData()
     private val mutableContacts: MutableLiveData<List<Contact>> = MutableLiveData()
-    val contacts: LiveData<List<Contact>>
-        get() = mutableContacts
-
-    private val mutableLoadingVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    val loadingVisibility: LiveData<Boolean>
-        get() = mutableLoadingVisibility
-
-    private val mutableListVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    val listVisibility: LiveData<Boolean>
-        get() = mutableListVisibility
-
-    private val mutableButtonVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    val buttonVisibility: LiveData<Boolean>
-        get() = mutableButtonVisibility
-
+    private val mutableSearchText: MutableLiveData<String> = MutableLiveData()
+    private val mutableIsLoading: MutableLiveData<Boolean> = MutableLiveData()
+    private val mutableIsLoaded: MutableLiveData<Boolean> = MutableLiveData()
+    private val mutableIsError: MutableLiveData<Boolean> = MutableLiveData()
     private val mutableError: MutableLiveData<Event<String>> = MutableLiveData()
-    val error: LiveData<Event<String>>
-        get() = mutableError
+
+    val contacts: LiveData<List<Contact>> get() = mutableContacts
+    val searchText: LiveData<String> get() = mutableSearchText
+    val isLoading: LiveData<Boolean> get() = mutableIsLoading
+    val isLoaded: LiveData<Boolean> get() = mutableIsLoaded
+    val isError: LiveData<Boolean> get() = mutableIsError
+    val error: LiveData<Event<String>> get() = mutableError
 
     init {
         loadContacts()
@@ -42,33 +41,48 @@ constructor(private val getContactsUseCase: GetContactsUseCase) : ViewModel() {
     fun loadContacts() {
         isLoading()
         viewModelScope.launch {
-            when (val result = getContactsUseCase()) {
-                is GetContactsResult.ContactsLoaded -> {
-                    isLoaded()
-                    mutableContacts.value = result.contacts
-                }
-                is GetContactsResult.Error -> {
-                    isError()
-                    mutableError.value = Event(result.errorMessage)
-                }
+            when (val result: GetContactsResult = getContactsUseCase()) {
+                is GetContactsResult.ContactsLoaded -> isLoaded(result.contacts)
+                is GetContactsResult.Error -> isError(result.errorMessage)
             }
         }
     }
 
+    fun searchContacts(text: String) {
+        isLoading()
+        mutableSearchText.value = text
+        viewModelScope.launch {
+            isSearched(searchContactsUseCase(text, mutableAllContacts.value ?: emptyList()))
+        }
+    }
+
     private fun isLoading() {
-        mutableButtonVisibility.value = false
-        mutableLoadingVisibility.value = true
+        mutableIsLoading.value = true
+        mutableIsError.value = false
     }
 
-    private fun isLoaded() {
-        mutableButtonVisibility.value = false
-        mutableLoadingVisibility.value = false
-        mutableListVisibility.value = true
+    private fun isLoaded(contacts: List<Contact>) {
+        setupLoadedVisibility()
+        mutableSearchText.value = ""
+        mutableAllContacts.value = contacts
+        mutableContacts.value = contacts
     }
 
-    private fun isError() {
-        mutableButtonVisibility.value = true
-        mutableLoadingVisibility.value = false
-        mutableListVisibility.value = false
+    private fun isSearched(contacts: List<Contact>) {
+        setupLoadedVisibility()
+        mutableContacts.value = contacts
+    }
+
+    private fun setupLoadedVisibility() {
+        mutableIsError.value = false
+        mutableIsLoading.value = false
+        mutableIsLoaded.value = true
+    }
+
+    private fun isError(errorMessage: String) {
+        mutableIsError.value = true
+        mutableIsLoading.value = false
+        mutableIsLoaded.value = false
+        mutableError.value = Event(errorMessage)
     }
 }

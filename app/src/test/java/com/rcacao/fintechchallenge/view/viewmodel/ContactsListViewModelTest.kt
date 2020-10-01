@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.*
 import com.rcacao.fintechchallenge.data.model.Contact
 import com.rcacao.fintechchallenge.domain.model.GetContactsResult
 import com.rcacao.fintechchallenge.domain.usecase.GetContactsUseCase
+import com.rcacao.fintechchallenge.domain.usecase.SearchContactsUseCase
 import com.rcacao.fintechchallenge.view.uistate.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +20,8 @@ import org.junit.Test
 class ContactsListViewModelTest {
 
     private lateinit var viewModel: ContactsListViewModel
-    private val usecase: GetContactsUseCase = mock()
+    private val getContactsUseCase: GetContactsUseCase = mock()
+    private val searchContactsUseCase: SearchContactsUseCase = mock()
 
     private var observerVisibility: Observer<Boolean> = mock()
     private var observerContacts: Observer<List<Contact>> = mock()
@@ -38,9 +40,9 @@ class ContactsListViewModelTest {
     fun loadContacts_OnSuccess_returnList() {
         runBlockingTest {
             val list: List<Contact> = listOf(Contact(), Contact())
-            whenever(usecase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(list))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(list))
 
-            viewModel = ContactsListViewModel(usecase)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
             viewModel.contacts.observeForever(observerContacts)
 
             verify(observerContacts).onChanged(list)
@@ -50,10 +52,9 @@ class ContactsListViewModelTest {
     @Test
     fun loadContacts_OnError_returnMessage() {
         runBlockingTest {
-            val event =
-                whenever(usecase.invoke()).thenReturn(GetContactsResult.Error("error message"))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.Error("error message"))
 
-            viewModel = ContactsListViewModel(usecase)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
             viewModel.error.observeForever(observerError)
 
             verify(observerError, times(1)).onChanged(any())
@@ -63,10 +64,10 @@ class ContactsListViewModelTest {
     @Test
     fun loadContacts_OnSuccess_listIsVisible() {
         runBlockingTest {
-            whenever(usecase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(emptyList()))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(emptyList()))
 
-            viewModel = ContactsListViewModel(usecase)
-            viewModel.listVisibility.observeForever(observerVisibility)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.isLoaded.observeForever(observerVisibility)
 
             verify(observerVisibility).onChanged(true)
         }
@@ -75,10 +76,10 @@ class ContactsListViewModelTest {
     @Test
     fun loadContacts_OnSuccess_loadingIsInvisible() {
         runBlockingTest {
-            whenever(usecase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(emptyList()))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(emptyList()))
 
-            viewModel = ContactsListViewModel(usecase)
-            viewModel.loadingVisibility.observeForever(observerVisibility)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.isLoading.observeForever(observerVisibility)
 
             verify(observerVisibility).onChanged(false)
         }
@@ -87,10 +88,10 @@ class ContactsListViewModelTest {
     @Test
     fun loadContacts_OnSuccess_buttonIsInvisible() {
         runBlockingTest {
-            whenever(usecase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(emptyList()))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.ContactsLoaded(emptyList()))
 
-            viewModel = ContactsListViewModel(usecase)
-            viewModel.buttonVisibility.observeForever(observerVisibility)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.isError.observeForever(observerVisibility)
 
             verify(observerVisibility).onChanged(false)
         }
@@ -99,10 +100,10 @@ class ContactsListViewModelTest {
     @Test
     fun loadContacts_OnError_listIsInvisible() {
         runBlockingTest {
-            whenever(usecase.invoke()).thenReturn(GetContactsResult.Error("error"))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.Error("error"))
 
-            viewModel = ContactsListViewModel(usecase)
-            viewModel.listVisibility.observeForever(observerVisibility)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.isLoaded.observeForever(observerVisibility)
 
             verify(observerVisibility).onChanged(false)
         }
@@ -111,10 +112,10 @@ class ContactsListViewModelTest {
     @Test
     fun loadContacts_OnError_loadingIsInvisible() {
         runBlockingTest {
-            whenever(usecase.invoke()).thenReturn(GetContactsResult.Error("error"))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.Error("error"))
 
-            viewModel = ContactsListViewModel(usecase)
-            viewModel.loadingVisibility.observeForever(observerVisibility)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.isLoading.observeForever(observerVisibility)
 
             verify(observerVisibility).onChanged(false)
         }
@@ -123,10 +124,10 @@ class ContactsListViewModelTest {
     @Test
     fun loadContacts_OnSuccess_buttonIsVisible() {
         runBlockingTest {
-            whenever(usecase.invoke()).thenReturn(GetContactsResult.Error("error"))
+            whenever(getContactsUseCase.invoke()).thenReturn(GetContactsResult.Error("error"))
 
-            viewModel = ContactsListViewModel(usecase)
-            viewModel.buttonVisibility.observeForever(observerVisibility)
+            viewModel = ContactsListViewModel(getContactsUseCase, searchContactsUseCase)
+            viewModel.isError.observeForever(observerVisibility)
 
             verify(observerVisibility).onChanged(true)
         }

@@ -56,17 +56,21 @@
                 android:layout_margin="8dp"
                 android:textColorHint="@color/colorAccent"
                 app:boxStrokeColor="@color/box_text_selector"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorAccent"
                 app:startIconDrawable="@drawable/ic_baseline_search_24"
-                app:startIconTint="@color/colorAccent">
+                app:startIconTint="@color/colorAccent"
+                bind:isVisible="@{viewmodel.isLoaded}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/search_hint"
-                    android:imeOptions="actionSearch"
-                    android:inputType="textNoSuggestions"
+                    android:imeOptions="actionDone"
+                    android:inputType="textFilter"
                     android:selectAllOnFocus="true"
+                    android:text="@{viewmodel.searchText}"
                     android:textColor="@android:color/white" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +82,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appbar"
-                bind:isVisible="@{viewmodel.loadingVisibility}">
+                bind:isLoading="@{viewmodel.isLoading}">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -86,24 +90,23 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
                     bind:contacts="@{viewmodel.contacts}"
-                    bind:isVisible="@{viewmodel.listVisibility}" />
+                    bind:isVisible="@{viewmodel.isLoaded}" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 
 
         <Button
-            android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:layout_gravity="center"
             android:background="@color/colorAccent"
             android:onClick="@{() -> viewmodel.loadContacts()}"
             android:padding="4dp"
             android:text="@string/try_again"
             android:textColor="@android:color/white"
-            bind:isVisible="@{viewmodel.buttonVisibility}" />
+            bind:isVisible="@{viewmodel.isError}" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
