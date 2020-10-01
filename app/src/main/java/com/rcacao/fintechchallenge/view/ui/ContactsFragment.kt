@@ -31,19 +31,9 @@ class ContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, TextW
         binding = FragmentContactsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
-        setupTextSearchListeners()
+        binding.txtSearch.addTextChangedListener(this)
         setupSwipeRefresh()
         return binding.root
-    }
-
-    private fun setupTextSearchListeners() {
-        binding.txtSearch.addTextChangedListener(this)
-        binding.txtSearch.setOnEditorActionListener { _, actionId, _ ->
-            actionId == EditorInfo.IME_ACTION_GO
-        }
-        binding.txtSearch.setOnKeyListener { _, keyCode, event ->
-            event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER
-        }
     }
 
     private fun setupSwipeRefresh() {
